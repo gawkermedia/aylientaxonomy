@@ -78,7 +78,7 @@ func main() {
 				if err != nil {
 					log.Fatal(err)
 				}
-				fmt.Printf("INSERT INTO %s VALUES ('%s', '%s', '%s', '%s');\n", tableName, id, item.Label, parentId, LookupForMainCategory(keys, parentId))
+				fmt.Printf("INSERT INTO %s VALUES (\"%s\", \"%s\", \"%s\", \"%s\");\n", tableName, id, item.Label, parentId, LookupForMainCategory(keys, parentId))
 			}
 		} else {
 			fmt.Print(err)
