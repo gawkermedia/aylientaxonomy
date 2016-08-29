@@ -67,23 +67,21 @@ func main() {
 	filename := tableName + ".json"
 	keys := make(map[string]Term)
 	buff, err := ioutil.ReadFile(filename)
-	if err == nil {
-		err := json.Unmarshal(buff, &terms)
-		if err == nil {
-			for _, item := range terms {
-				keys[item.Id] = item
-			}
-			for id, item := range keys {
-				parentId, err := UrlToId(GetParentLinkOrSelf(item.Links))
-				if err != nil {
-					log.Fatal(err)
-				}
-				fmt.Printf("INSERT INTO %s VALUES (\"%s\", \"%s\", \"%s\", \"%s\");\n", tableName, id, item.Label, parentId, LookupForMainCategory(keys, parentId))
-			}
-		} else {
-			fmt.Print(err)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = json.Unmarshal(buff, &terms)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, item := range terms {
+		keys[item.Id] = item
+	}
+	for id, item := range keys {
+		parentId, err := UrlToId(GetParentLinkOrSelf(item.Links))
+		if err != nil {
+			log.Fatal(err)
 		}
-	} else {
-		fmt.Print(err)
+		fmt.Printf("INSERT INTO %s VALUES (\"%s\", \"%s\", \"%s\", \"%s\");\n", tableName, id, item.Label, parentId, LookupForMainCategory(keys, parentId))
 	}
 }
